@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 import AnswerModal from './components/AnswerModal.js';
 import CalculatorForm from './components/CalculatorForm.js'
@@ -6,11 +7,11 @@ import CalculatorForm from './components/CalculatorForm.js'
 const App = () => {
   const [firstNum, setFirstNum] = useState(1);
   const [secondNum, setSecondNum] = useState(1);
-  const [radioValue, setRadioValue] = useState('1');
+  const [radioValue, setRadioValue] = useState(1);
   const [comment, setComment] = useState('Answer');
-  const [value, setValue] = useState(0);
-  const [answerToggle, setAnsToggle] = useState(false);
-  const [numeral, setNumberal] = useState('MVI');
+  const [value, setValue] = useState(1);
+  const [numeral, setNumeral] = useState('II');
+  const [show, setShow] = useState(false);
 
   const radios = [
     { name: '+', value: '1' },
@@ -24,7 +25,6 @@ const App = () => {
 
     if (radioValue === '1') {
       total = firstNum + secondNum;
-      console.log('adding', total);
     } else if (radioValue === '2') {
       total = firstNum - secondNum;
     } else if (radioValue === '3') {
@@ -33,9 +33,10 @@ const App = () => {
       total = firstNum / secondNum;
     }
 
+
     if (total === 0) {
       setComment('Nulla!\n(Latin for nothing)');
-    } else if (total !== Math.round(total)) {
+    } else if (total !== Math.round(total) && typeof total) {
       total = Math.round(total);
       setComment('This numeral is rounded to the nearest whole number.');
     }
@@ -53,9 +54,15 @@ const App = () => {
 
   useEffect(() => {
     findTotal();
-    //axios to get numeral
-    //may need to move show from AnswerModal to App for async
-  }, [answerToggle])
+  }, [firstNum, secondNum, radioValue])
+
+  const getNumeral = () => {
+    axios.get(`http://localhost:3005/romanize/${value}`)
+    .then((res) => {
+      setNumeral(res.data);
+    })
+    .then(() => setShow(true))
+  }
 
   return (
     <div className="App">
@@ -64,7 +71,7 @@ const App = () => {
       <br/>
       <CalculatorForm setFirstNum={setFirstNum} setSecondNum={setSecondNum} radioValue={radioValue} setRadioValue={setRadioValue} radios={radios} />
       <br/>
-      <AnswerModal setAnsToggle={setAnsToggle} comment={comment} setComment={setComment} numeral={numeral} value={value} />
+      <AnswerModal comment={comment} setComment={setComment} numeral={numeral} value={value} getNumeral={getNumeral} show={show} setShow={setShow} />
     </div>
   );
 }

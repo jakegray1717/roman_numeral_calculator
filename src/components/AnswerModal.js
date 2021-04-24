@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const AnswerModal = ({ setAnsToggle, comment, setComment, numeral, value }) => {
-
-  const [show, setShow] = useState(false);
-
+const AnswerModal = ({ comment, setComment, numeral, value, getNumeral, show, setShow }) => {
   const handleClose = () => {
-    setAnsToggle(false);
     setComment('Answer');
     setShow(false);
   }
 
   const handleShow = () => {
-    setAnsToggle(true);
-    setShow(true);
+    getNumeral();
   }
 
   return (
@@ -24,9 +19,9 @@ const AnswerModal = ({ setAnsToggle, comment, setComment, numeral, value }) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{comment}</Modal.Title>
+          {/* <Modal.Title>{comment}</Modal.Title> */}
         </Modal.Header>
-        <Modal.Body>{value}</Modal.Body>
+        <Modal.Body>{numeral}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
