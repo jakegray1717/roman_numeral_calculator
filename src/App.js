@@ -10,7 +10,7 @@ const App = () => {
   const [radioValue, setRadioValue] = useState(1);
   const [comment, setComment] = useState('Answer');
   const [value, setValue] = useState(1);
-  const [numeral, setNumeral] = useState('MVI');
+  const [numeral, setNumeral] = useState('II');
   const [show, setShow] = useState(false);
 
   const radios = [
@@ -25,7 +25,6 @@ const App = () => {
 
     if (radioValue === '1') {
       total = firstNum + secondNum;
-      console.log('adding', total);
     } else if (radioValue === '2') {
       total = firstNum - secondNum;
     } else if (radioValue === '3') {
@@ -34,9 +33,10 @@ const App = () => {
       total = firstNum / secondNum;
     }
 
+
     if (total === 0) {
       setComment('Nulla!\n(Latin for nothing)');
-    } else if (total !== Math.round(total)) {
+    } else if (total !== Math.round(total) && typeof total) {
       total = Math.round(total);
       setComment('This numeral is rounded to the nearest whole number.');
     }
@@ -57,7 +57,6 @@ const App = () => {
   }, [firstNum, secondNum, radioValue])
 
   const getNumeral = () => {
-    //findTotal();
     axios.get(`http://localhost:3005/romanize/${value}`)
     .then((res) => {
       setNumeral(res.data);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const AnswerModal = ({ comment, setComment, numeral, value, getNumeral, show, setShow }) => {
@@ -19,7 +19,7 @@ const AnswerModal = ({ comment, setComment, numeral, value, getNumeral, show, se
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{comment}</Modal.Title>
+          {/* <Modal.Title>{comment}</Modal.Title> */}
         </Modal.Header>
         <Modal.Body>{numeral}</Modal.Body>
         <Modal.Footer>
